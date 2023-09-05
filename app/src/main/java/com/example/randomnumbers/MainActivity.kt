@@ -12,7 +12,7 @@ import kotlin.random.Random
 class MainActivity : AppCompatActivity() {
 
     private lateinit var myAdapter: MyAdapter
-    private val handler = Handler(Looper.getMainLooper())
+    private val uiHandler = Handler(Looper.getMainLooper())
     private var myList = singletonList
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,15 +27,17 @@ class MainActivity : AppCompatActivity() {
             this, LinearLayoutManager.VERTICAL, false
         )
 
-        // РОбновление списка
-        handler.postDelayed({
-            singletonList = initList()
-            val diff = DiffUtil.calculateDiff(MyDiffUtil(singletonList, myList))
-            myList = singletonList
-            myAdapter.list = myList
-            diff.dispatchUpdatesTo(myAdapter)
+        // Обновление списка
+        uiHandler.postDelayed({ repeat() }, TIMER)
+    }
 
-        }, TIMER)
+    private fun repeat() {
+        singletonList = initList()
+        val diff = DiffUtil.calculateDiff(MyDiffUtil(singletonList, myList))
+        myList = singletonList
+        myAdapter.list = myList
+        diff.dispatchUpdatesTo(myAdapter)
+        uiHandler.postDelayed({ repeat() }, TIMER) // Для повторения
     }
 
     companion object {
