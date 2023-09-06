@@ -19,7 +19,7 @@ class MyDiffUtil(private val oldList: List<Number>, private val newList: List<Nu
         val oldItem = oldList[oldItemPosition]
         val newItem = newList[newItemPosition]
 
-        return oldItem.number == newItem.number
+        return oldItem == newItem
     }
 
     override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
